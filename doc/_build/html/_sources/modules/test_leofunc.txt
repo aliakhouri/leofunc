@@ -1,0 +1,12 @@
+.. rst3: filename: test_leofunc
+
+
+.. _test_leofunc:
+
+:mod:`test_leofunc` -- tests of the functionality.
+================================================================================
+
+.. automodule:: test_leofunc
+   :synopsis: tests of the functionality.
+   :members:
+

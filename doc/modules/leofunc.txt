@@ -1,0 +1,12 @@
+.. rst3: filename: leofunc
+
+
+.. _leofunc:
+
+:mod:`leofunc` -- a simulation of the suggested functionality 
+================================================================================
+
+.. automodule:: leofunc
+   :synopsis: a simulation of the suggested functionality.
+   :members:
+

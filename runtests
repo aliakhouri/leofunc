@@ -1,0 +1,4 @@
+#!
+nosetests --with-doctest --with-coverage --cover-html --cover-package=leofunc,leonode
+
+

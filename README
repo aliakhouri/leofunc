@@ -1,0 +1,31 @@
+A simulation of functional directives in leo
+---------------------------------------------
+
+Starting points:
+
+1. Best to start with the sphinx-generated docs 
+
+    ./doc/_build/html/index.html
+
+2. Tests
+    
+    nosetests
+
+    or
+
+    python test_leofunc.py
+
+
+NOTE: certain tests have some dependencies on external libraries (namely Cheetah templates and pygraphviz). These are entirely optional and may be disabled by commenting out the tests.
+
+3. Open up code.leo in leo
+
+    run scripts in the leo section
+
+
+Enjoy,
+
+AK
+alia_khouri@yahoo.com
+
+

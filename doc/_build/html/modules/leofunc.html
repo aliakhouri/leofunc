@@ -1,0 +1,490 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>leofunc – a simulation of the suggested functionality &mdash; leofunc 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="leofunc 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Functional-Leo Modules" href="index.html" />
+    <link rel="next" title="test_leofunc – tests of the functionality." href="test_leofunc.html" />
+    <link rel="prev" title="Functional-Leo Modules" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="test_leofunc.html" title="test_leofunc – tests of the functionality."
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Functional-Leo Modules"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">leofunc 0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Functional-Leo Modules</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Functional-Leo Modules</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="test_leofunc.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">test_leofunc</span></tt> &#8211; tests of the functionality.</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/modules/leofunc.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-leofunc">
+<span id="leofunc-a-simulation-of-the-suggested-functionality"></span><span id="leofunc"></span><h1><a class="reference internal" href="#module-leofunc" title="leofunc: a simulation of the suggested functionality."><tt class="xref py py-mod docutils literal"><span class="pre">leofunc</span></tt></a> &#8211; a simulation of the suggested functionality<a class="headerlink" href="#module-leofunc" title="Permalink to this headline">¶</a></h1>
+<p>leofunc.py</p>
+<p>A simulation of leo directives as decorators</p>
+<p>usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">leofunc</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">directive</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@directive</span><span class="p">(</span><span class="s">&#39;hello&#39;</span><span class="p">,</span> <span class="s">&#39;hello-expr&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">eval_hello</span><span class="p">(</span><span class="n">world</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">_eval_hello</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="s">&#39;hello </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">world</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">_eval_hello</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">&quot;@hello(&#39;leo&#39;)&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span>
+<span class="go"> &lt;Node  [@hello(&#39;leo&#39;)]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">type</span>
+<span class="go">&#39;hello-expr&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">directive</span>
+<span class="go">&quot;hello(&#39;leo&#39;)&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">code</span>
+<span class="go">&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">data</span>
+<span class="go">&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">text</span>
+<span class="go">&quot;@hello(&#39;leo&#39;)&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">view</span>
+<span class="go">&#39;hello leo&#39;</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="leofunc.Body">
+<em class="property">class </em><tt class="descclassname">leofunc.</tt><tt class="descname">Body</tt><big>(</big><em>node</em>, <em>text</em><big>)</big><a class="headerlink" href="#leofunc.Body" title="Permalink to this definition">¶</a></dt>
+<dd><p>concrete implementation of body element</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="leofunc.DownOutline">
+<em class="property">exception </em><tt class="descclassname">leofunc.</tt><tt class="descname">DownOutline</tt><a class="headerlink" href="#leofunc.DownOutline" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends the outline iterator down a level</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="leofunc.Element">
+<em class="property">class </em><tt class="descclassname">leofunc.</tt><tt class="descname">Element</tt><big>(</big><em>node</em>, <em>text</em><big>)</big><a class="headerlink" href="#leofunc.Element" title="Permalink to this definition">¶</a></dt>
+<dd><p>superclass of a head or body element in a LeoNode</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> (<em>Node</em>) &#8211; a leo node</li>
+<li><strong>text</strong> (<em>str</em>) &#8211; raw text associated with the element</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="leofunc.Element.del_view">
+<tt class="descname">del_view</tt><big>(</big><big>)</big><a class="headerlink" href="#leofunc.Element.del_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>del default obj view</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="leofunc.Element.eval">
+<tt class="descname">eval</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.Element.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>the evaluation dispatcher defaults to self.text</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="leofunc.Element.eval_view">
+<tt class="descname">eval_view</tt><big>(</big><big>)</big><a class="headerlink" href="#leofunc.Element.eval_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>eval current obj view</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="leofunc.Element.get_namespace">
+<tt class="descname">get_namespace</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.Element.get_namespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves namespace and combines tree.namespace</p>
+<p>Note: this creates an independent namespace which dies
+i.e. it is expressly not an inplace namespace.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="leofunc.Element.get_view">
+<tt class="descname">get_view</tt><big>(</big><big>)</big><a class="headerlink" href="#leofunc.Element.get_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns default object view</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="leofunc.Element.parse">
+<tt class="descname">parse</tt><big>(</big><big>)</big><a class="headerlink" href="#leofunc.Element.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates attributes from input text</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="leofunc.Element.render">
+<tt class="descname">render</tt><big>(</big><em>name='default'</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.Element.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>render to named view or default</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="leofunc.Element.set_view">
+<tt class="descname">set_view</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#leofunc.Element.set_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>set default object view</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="leofunc.Element.type">
+<tt class="descname">type</tt><a class="headerlink" href="#leofunc.Element.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves the type of the directive</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="leofunc.Element.view">
+<tt class="descname">view</tt><a class="headerlink" href="#leofunc.Element.view" title="Permalink to this definition">¶</a></dt>
+<dd><p>default view of object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="leofunc.Element.views">
+<tt class="descname">views</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#leofunc.Element.views" title="Permalink to this definition">¶</a></dt>
+<dd><p>multiple views of object with caching</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="leofunc.Head">
+<em class="property">class </em><tt class="descclassname">leofunc.</tt><tt class="descname">Head</tt><big>(</big><em>node</em>, <em>text</em><big>)</big><a class="headerlink" href="#leofunc.Head" title="Permalink to this definition">¶</a></dt>
+<dd><p>concrete implementation of head element</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="leofunc.Node">
+<em class="property">class </em><tt class="descclassname">leofunc.</tt><tt class="descname">Node</tt><big>(</big><em>head=''</em>, <em>body=''</em>, <em>children=</em><span class="optional">[</span><span class="optional">]</span>, <em>parent=None</em>, <em>type=None</em>, <em>attributes={}</em>, <em>namespace={}</em>, <em>level=''</em><big>)</big><a class="headerlink" href="#leofunc.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>principle Node class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>head</strong> (<em>str</em>) &#8211; a string for the head</li>
+<li><strong>body</strong> (<em>str</em>) &#8211; a string for the body</li>
+<li><strong>children</strong> (<em>list</em>) &#8211; children nodes</li>
+<li><strong>parent</strong> (<em>Node</em>) &#8211; a parent node</li>
+<li><strong>type</strong> (<em>str</em>) &#8211; the given node-type</li>
+<li><strong>attributes</strong> (<em>dict</em>) &#8211; a dict of attributes</li>
+<li><strong>namespace</strong> (<em>dict</em>) &#8211; node-level namespace</li>
+<li><strong>level</strong> (<em>str</em>) &#8211; the position of a node in an outline</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="leofunc.Node.render">
+<tt class="descname">render</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.Node.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>renders both head and body</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="leofunc.Node.walk">
+<tt class="descname">walk</tt><big>(</big><em>node</em>, <em>o=None</em><big>)</big><a class="headerlink" href="#leofunc.Node.walk" title="Permalink to this definition">¶</a></dt>
+<dd><p>recursive node walker
+sets parents and levels as a bonus
+cheers castironpi and gabriel (-:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="leofunc.ReDirector">
+<em class="property">class </em><tt class="descclassname">leofunc.</tt><tt class="descname">ReDirector</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#leofunc.ReDirector" title="Permalink to this definition">¶</a></dt>
+<dd><p>abstract redirection class</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="leofunc.To">
+<em class="property">class </em><tt class="descclassname">leofunc.</tt><tt class="descname">To</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#leofunc.To" title="Permalink to this definition">¶</a></dt>
+<dd><p>the principal redirection mechanism</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span><span class="s">&#39;b&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">to</span> <span class="o">=</span> <span class="n">To</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># sets the node&#39;s head to &#39;hello&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">to</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s">&#39;hello&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">node</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="s">&#39;hello&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="leofunc.ToBody">
+<em class="property">class </em><tt class="descclassname">leofunc.</tt><tt class="descname">ToBody</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#leofunc.ToBody" title="Permalink to this definition">¶</a></dt>
+<dd><p>redirects parameters to body object</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="leofunc.ToHead">
+<em class="property">class </em><tt class="descclassname">leofunc.</tt><tt class="descname">ToHead</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#leofunc.ToHead" title="Permalink to this definition">¶</a></dt>
+<dd><p>redirects parameters to head object</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="leofunc.ToParent">
+<em class="property">class </em><tt class="descclassname">leofunc.</tt><tt class="descname">ToParent</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#leofunc.ToParent" title="Permalink to this definition">¶</a></dt>
+<dd><p>redirects the parameters to parent object</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="leofunc.Tree">
+<em class="property">class </em><tt class="descclassname">leofunc.</tt><tt class="descname">Tree</tt><a class="headerlink" href="#leofunc.Tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>placeholder for a more functional tree</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="leofunc.UpOutline">
+<em class="property">exception </em><tt class="descclassname">leofunc.</tt><tt class="descname">UpOutline</tt><a class="headerlink" href="#leofunc.UpOutline" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends the outline iterator up a level</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.combine">
+<tt class="descclassname">leofunc.</tt><tt class="descname">combine</tt><big>(</big><em>*namespaces</em><big>)</big><a class="headerlink" href="#leofunc.combine" title="Permalink to this definition">¶</a></dt>
+<dd><p>combines dictionaries
+last dict is prior.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">combine</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">})</span>
+<span class="go">{1: 3}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.directive">
+<tt class="descclassname">leofunc.</tt><tt class="descname">directive</tt><big>(</big><em>symbol</em>, <em>type=''</em>, <em>kind='element'</em><big>)</big><a class="headerlink" href="#leofunc.directive" title="Permalink to this definition">¶</a></dt>
+<dd><p>a decorator registerings objects as leo directives</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_cheetah">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_cheetah</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_cheetah" title="Permalink to this definition">¶</a></dt>
+<dd><p>evaluates cheetah templates</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_doc">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_doc</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates and registers an &#64;doc directive</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_graph">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_graph</tt><big>(</big><em>name=''</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates and registers an &#64;graph directive</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_pipe">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_pipe</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_pipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates and registers an &#64;pipe directive</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_py_expression">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_py_expression</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_py_expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates and registers an &#64;py directive</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_py_namespace">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_py_namespace</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_py_namespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates and registers an &#64;imports directive</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_py_suite">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_py_suite</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_py_suite" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates and registers an &#64;pyc directive</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_rss">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_rss</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_rss" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates and registers an &#64;rss directive</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_shadow">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_shadow</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_shadow" title="Permalink to this definition">¶</a></dt>
+<dd><p>placeholder for a more functional shadow directive
+doesn&#8217;t really do anything but register the path 
+in the node&#8217;s attributes</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_shell">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_shell</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates and registers an &#64;shell and &#64;sh directives</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_shell_value">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_shell_value</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_shell_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates and registers an &#64;sh directives</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_template">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_template</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>evaluates string templates</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.eval_xtemplate">
+<tt class="descclassname">leofunc.</tt><tt class="descname">eval_xtemplate</tt><big>(</big><em>engine</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.eval_xtemplate" title="Permalink to this definition">¶</a></dt>
+<dd><p>multi-type template directive</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.outline">
+<tt class="descclassname">leofunc.</tt><tt class="descname">outline</tt><big>(</big><big>)</big><a class="headerlink" href="#leofunc.outline" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates numbered outlines</p>
+<p>originally created by castironpi (aaron brady), 
+tweaked by gabriel genelina</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">o</span> <span class="o">=</span> <span class="n">outline</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">o</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<span class="go">&#39;1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">o</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span><span class="n">DownOutline</span><span class="p">)</span>
+<span class="go">&#39;1.0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">o</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<span class="go">&#39;1.1&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.pipe">
+<tt class="descclassname">leofunc.</tt><tt class="descname">pipe</tt><big>(</big><em>arg</em>, <em>funcs</em><big>)</big><a class="headerlink" href="#leofunc.pipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a functional pipe operating on arg</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span><span class="n">y</span><span class="o">*</span><span class="mi">2</span><span class="p">])</span> 
+<span class="go">4</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.sort_children">
+<tt class="descclassname">leofunc.</tt><tt class="descname">sort_children</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#leofunc.sort_children" title="Permalink to this definition">¶</a></dt>
+<dd><p>sorts children nodes</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.strip_all">
+<tt class="descclassname">leofunc.</tt><tt class="descname">strip_all</tt><big>(</big><em>text</em><big>)</big><a class="headerlink" href="#leofunc.strip_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>cleans all whitespace in a string</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">strip_all</span><span class="p">(</span><span class="s">&#39; hello world &#39;</span><span class="p">)</span>
+<span class="go">&#39;helloworld&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="leofunc.strip_sides">
+<tt class="descclassname">leofunc.</tt><tt class="descname">strip_sides</tt><big>(</big><em>text</em><big>)</big><a class="headerlink" href="#leofunc.strip_sides" title="Permalink to this definition">¶</a></dt>
+<dd><p>cleans whitespace from both sides of a string</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">strip_sides</span><span class="p">(</span><span class="s">&#39; hello &#39;</span><span class="p">)</span>
+<span class="go">&#39;hello&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="test_leofunc.html" title="test_leofunc – tests of the functionality."
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Functional-Leo Modules"
+             >previous</a> |</li>
+        <li><a href="../index.html">leofunc 0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Functional-Leo Modules</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Alia Khouri.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>
