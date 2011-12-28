@@ -28,9 +28,12 @@ usage::
     "@hello('leo')"
     >>> n.head.view
     'hello leo'
-    >>> 
+    >>>
 """
-import sys, string, re, os
+import sys
+import string
+import re
+import os
 from datetime import datetime
 
 from sqlalchemy import create_engine
@@ -48,16 +51,16 @@ session = Session()
 PATTERNS = {
     # @(?P<directive>\S+)\s+(?P<code>.*)\n@\n(?P<data>.*)
     'block': re.compile(
-        r'@(?P<directive>\S+)\s+'   
-        r'(?P<code>.*)\n@\n'      
+        r'@(?P<directive>\S+)\s+'
+        r'(?P<code>.*)\n@\n'
         r'(?P<data>.*)'
-        ,flags=re.DOTALL),
+        , flags=re.DOTALL),
 
     # @(?P<directive>\S+)\s?(?P<code>.*)
     'line': re.compile(
         r'@(?P<directive>\S+)\s?'
         r'(?P<code>.*)'
-        ,flags=re.DOTALL)
+        , flags=re.DOTALL)
 }
 
 DIRECTIVES = {}
@@ -66,20 +69,23 @@ DIRECTIVES = {}
 NAMESPACE = {
     'a': 2,
     'date': str(datetime.now().date()),
-    'upper' : lambda s: s.upper(),
+    'upper': lambda s: s.upper(),
 }
+
 
 class UpOutline(Exception):
     "sends the outline iterator up a level"
 
+
 class DownOutline(Exception):
     "sends the outline iterator down a level"
+
 
 def outline():
     """
     creates numbered outlines
 
-    originally created by castironpi (aaron brady), 
+    originally created by castironpi (aaron brady),
     tweaked by gabriel genelina
 
         >>> o = outline()
@@ -98,9 +104,10 @@ def outline():
         except DownOutline:
             stack.append(0)
         except UpOutline:
-            stack.pop(-1) 
+            stack.pop(-1)
 
 # utility functions
+
 
 def combine(*namespaces):
     """combines dictionaries
@@ -113,6 +120,7 @@ def combine(*namespaces):
     for namespace in namespaces:
         combined.update(namespace)
     return combined
+
 
 def strip_sides(text):
     """cleans whitespace from both sides of a string
@@ -135,10 +143,10 @@ def strip_all(text):
 def pipe(arg, funcs):
     """creates a functional pipe operating on arg
 
-        >>> pipe(1, [lambda x:x+1, lambda y:y*2]) 
+        >>> pipe(1, [lambda x:x+1, lambda y:y*2])
         4
     """
-    result = arg 
+    result = arg
     for func in funcs:
         result = func(result)
     return result
@@ -151,17 +159,20 @@ def directive(symbol, type='', kind='element'):
     def _register(obj):
         obj.type = type
         obj.kind = kind
-        DIRECTIVES[symbol] = obj 
+        DIRECTIVES[symbol] = obj
         return obj
     return _register
 
 # -------------------------------------------------------------
 # Higher-level functions as directives
+
+
 @directive('hello', 'hello-expr')
 def hello(world):
     def _hello(element):
         return 'hello ' + world
     return _hello
+
 
 @directive('attr', 'set-attributes')
 def set_attributes(**kwds):
@@ -169,15 +180,17 @@ def set_attributes(**kwds):
         element.node.attributes.update(kwds)
     return _set_attributes
 
+
 @directive('shadow', 'shadow-object')
 def eval_shadow(*args, **kwds):
     '''placeholder for a more functional shadow directive
-       doesn't really do anything but register the path 
-       in the node's attributes 
+       doesn't really do anything but register the path
+       in the node's attributes
     '''
     def _eval_shadow(element):
         element.node.attributes['path'] = element.code
     return _eval_shadow
+
 
 @directive('pg', 'py-globals')
 @directive('imports', 'py-imports')
@@ -199,6 +212,7 @@ def eval_py_expression(**kwds):
         return eval(element.code, globals(), namespace)
     return _eval_py_expression
 
+
 @directive('pyc', 'py-suite')
 def eval_py_suite(**kwds):
     """ creates and registers an @pyc directive
@@ -207,6 +221,7 @@ def eval_py_suite(**kwds):
         # namespace = element.get_namespace(**kwds)
         exec element.code in element.node.namespace
     return _eval_py_suite
+
 
 @directive('shell', 'shell-suite')
 def eval_shell(**kwds):
@@ -218,15 +233,18 @@ def eval_shell(**kwds):
             os.system(line)
     return _eval_shell
 
+
 @directive('sh', 'shell-value')
 def eval_shell_value(**kwds):
     """ creates and registers an @sh directives
     """
     import subprocess
+
     def _eval_shell_value(element):
         args = element.code.split()
         return subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
     return _eval_shell_value
+
 
 @directive('pipe', 'py-pipe')
 def eval_pipe(**kwds):
@@ -270,6 +288,7 @@ def eval_xtemplate(engine, **kwds):
     """ multi-type template directive
     """
     engines = {'cheetah': eval_cheetah}
+
     def _eval_xtemplate(element):
         eval_func = engines[engine](**kwds)
         return eval_func(element)
@@ -293,14 +312,15 @@ def eval_graph(name='', **kwds):
             first, last = entry.split('->')
             first = strip_sides(first)
             last = strip_sides(last)
-            edges.append((first,last))
+            edges.append((first, last))
         graph.add_nodes_from(nodes)
-        graph.add_edges_from(edges)        
+        graph.add_edges_from(edges)
         graph.write('%s.dot' % name)
         graph.layout()
         graph.draw('%s.png' % name)
         return graph.string()
     return _eval_graph
+
 
 @directive('rss', 'rss-feed')
 def eval_rss(**kwds):
@@ -315,6 +335,7 @@ def eval_rss(**kwds):
         return feed
     return _eval_rss
 
+
 @directive('doc', 'doc-attr')
 def eval_doc(**kwds):
     """ creates and registers an @doc directive
@@ -323,6 +344,7 @@ def eval_doc(**kwds):
         element.doc = element.code
         return element.doc
     return _eval_doc
+
 
 @directive('csum', 'csum-expr')
 def eval_csum(**kwds):
@@ -348,16 +370,18 @@ def eval_csum(**kwds):
 # -------------------------------------------------------------
 # Tree Transformers
 
+
 @directive('sort', 'tree-transformer')
 def sort_children(**kwds):
     """sorts children nodes
     """
     def _sort_children(element):
-        element.node.children = sorted(element.node.children)        
+        element.node.children = sorted(element.node.children)
     return _sort_children
 
 # -------------------------------------------------------------
 # Main  classes
+
 
 class Element(Base):
     __abstract__ = True
@@ -367,7 +391,7 @@ class Element(Base):
             for its content
         """
         self.text = text
-        self.cache = {'default':''}
+        self.cache = {'default': ''}
         self.parse()
         if self.directive:
             self.type = self.get_type()
@@ -386,7 +410,7 @@ class Element(Base):
         if func:
             return func.type
         else:
-            return 'user-data'        
+            return 'user-data'
 
     def get_view(self):
         """ returns default object view
@@ -403,15 +427,13 @@ class Element(Base):
         """
         self.cache['default'] = ''
 
-
-    view = property(get_view, set_view, del_view, 
+    view = property(get_view, set_view, del_view,
                     doc="default view of object")
 
     def eval_view(self):
         """eval current obj view
         """
         return eval(self.view, globals(), self.get_namespace())
-
 
     def views(self, name):
         """multiple views of object with caching
@@ -428,12 +450,11 @@ class Element(Base):
         """
         self.cache[name] = self.eval(**kwds)
 
-
     def parse(self):
         """updates attributes from inpunt text
         """
         if self.text.startswith('@'):
-            result = {'directive':'', 'code':'', 'data':''}
+            result = {'directive': '', 'code': '', 'data': ''}
             if '\n' in self.text.strip():
                 # a block
                 pattern = PATTERNS['block']
@@ -452,7 +473,6 @@ class Element(Base):
         else:
             self.data = self.text
 
-
     def get_namespace(self, **kwds):
         """ retrieves namespace and combines tree.namespace
 
@@ -460,7 +480,7 @@ class Element(Base):
             i.e. it is expressly not an inplace namespace.
         """
         self.node.namespace.update(kwds)
-        return combine(self.node.tree.namespace, self.node.namespace)        
+        return combine(self.node.tree.namespace, self.node.namespace)
 
     def eval(self, *args, **kwds):
         """ the evaluation dispatcher defaults to self.text
@@ -503,6 +523,7 @@ class Body(Element):
     type = Column(String(50))
     version = Column(Integer)
 
+
 class ReDirector(object):
     """ abstract redirection class
     """
@@ -512,25 +533,32 @@ class ReDirector(object):
     def __call__(self):
         return self.node
 
+
 class ToBody(ReDirector):
     """ redirects parameters to body object
     """
     def data(self, data):
         self.node.body.data = data
+
     def code(self, code):
         self.node.body.code = code
+
     def view(self, obj):
         self.node.body.view = obj
+
 
 class ToHead(ReDirector):
     """ redirects parameters to head object
     """
     def data(self, data):
         self.node.head.data = data
+
     def code(self, code):
         self.node.head.code = code
+
     def view(self, obj):
         self.node.head.view = obj
+
 
 class ToParent(ReDirector):
     """ redirects the parameters to parent object
@@ -539,6 +567,7 @@ class ToParent(ReDirector):
         super(ToParent, self).__init__(node)
         self.head = ToHead(node.parent)
         self.body = ToBody(node.parent)
+
 
 class To(ReDirector):
     """ the principal redirection mechanism
@@ -551,7 +580,7 @@ class To(ReDirector):
     """
     def __init__(self, node):
         super(To, self).__init__(node)
-        self.stdout = lambda s: sys.stdout.write(s+'\n')
+        self.stdout = lambda s: sys.stdout.write(s + '\n')
         self.head = ToHead(node)
         self.body = ToBody(node)
         self.parent = ToParent(node)
@@ -563,23 +592,24 @@ class Tree(object):
     """
     namespace = {}
 
+
 class Node(Base):
     __tablename__ = "node"
     id = Column(Integer, primary_key=True)
     parent_id = Column(Integer, ForeignKey('node.id'))
-    children = relationship("Node", backref=backref('parent', 
+    children = relationship("Node", backref=backref('parent',
         remote_side='Node.id'))
-        
+
     head_id = Column(Integer, ForeignKey('head.id'))
     head = relationship('Head', uselist=False, backref=backref('node',
         uselist=False))
     body_id = Column(Integer, ForeignKey('body.id'))
     body = relationship('Body', uselist=False, backref=backref('node',
         uselist=False))
-    version = Column(Integer)    
+    version = Column(Integer)
     type = Column(String(50))
 
-    def __init__(self, head='', body='', parent=None, 
+    def __init__(self, head='', body='', parent=None,
                 type=None, attributes={}, namespace={}, level=''):
         """initialize the class
         """
@@ -596,7 +626,6 @@ class Node(Base):
         #self.directive = ''
         self.level = level
 
-
     def walk(self, node, o=None):
         """ recursive node walker
             sets parents and levels as a bonus
@@ -612,7 +641,7 @@ class Node(Base):
                 child.parent = node
                 for subnode in self.walk(child, o):
                     yield subnode
-            o.throw(UpOutline) 
+            o.throw(UpOutline)
 
     def __iter__(self):
         return self.walk(self)
@@ -622,7 +651,7 @@ class Node(Base):
 
     def __repr__(self):
         name = self.__class__.__name__
-        return "%s<%s %s [%s]>" % ( ' '*len(self.level.split('.')),
+        return "%s<%s %s [%s]>" % (' ' * len(self.level.split('.')),
             name, self.level, self.head.text)
 
     def __cmp__(self, other):
@@ -635,8 +664,6 @@ class Node(Base):
         self.body.render(**kwds)
 
 
-
-
 if __name__ == '__main__':
     debug = False
     if debug:
@@ -644,10 +671,10 @@ if __name__ == '__main__':
         doctest.testmod()
     else:
         Base.metadata.create_all(engine)
-    
+
         # nodes
         n1 = Node('@hello("sa") option')
         n2 = Node('@py 1+1', parent=n1)
         n3 = Node('@pyc x=100', parent=n1)
-        
+
         session.add_all([n1, n2, n3])
